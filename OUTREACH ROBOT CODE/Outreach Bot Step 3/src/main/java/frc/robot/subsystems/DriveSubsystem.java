@@ -37,9 +37,9 @@ public class DriveSubsystem extends Subsystem {
 
     public void manualDrive(double xAxis, double yAxis, double leftTrigger, double rightTrigger) {
         // EDITABLES
-            double xAxisSmooth = .15;
-            double yAxisSmooth = .15;
- 
+            final double xAxisSmooth = .15;
+            final double yAxisSmooth = .15;
+            
         // INPUTS
             double turn = -leftTrigger + rightTrigger;
  
@@ -68,8 +68,8 @@ public class DriveSubsystem extends Subsystem {
 
     public void driveMotors() {
         // EDITABLES
-            double autoCorrectAngle = 90; // THE ANGLE THAT THE AUTO CORRECT WILL CAUSE THE MOTORS TO SPIN AT 100%
-            double maxSpinSpeed = .7; //THE MAX SPEED THE MOTORS WILL SPIN WHEN TURNING
+            final double autoCorrectAngle = 90; // THE ANGLE THAT THE AUTO CORRECT WILL CAUSE THE MOTORS TO SPIN AT 100%
+            final double maxSpinSpeed = .7; //THE MAX SPEED THE MOTORS WILL SPIN WHEN TURNING
 
         // INPUTES
             double xAxisFinalOutput = xAxisOutput;

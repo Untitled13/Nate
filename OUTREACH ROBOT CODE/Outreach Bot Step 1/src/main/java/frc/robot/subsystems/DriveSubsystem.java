@@ -35,12 +35,7 @@ public class DriveSubsystem extends Subsystem {
         backRight.setInverted(true);
     }
 
-    public void manualDrive() {
-        double xAxis = Robot.OI.controller.getX(Hand.kLeft);
-        double yAxis = Robot.OI.controller.getY(Hand.kLeft);
-
-        double leftTrigger = Robot.OI.controller.getTriggerAxis(Hand.kLeft);
-        double rightTrigger = Robot.OI.controller.getTriggerAxis(Hand.kRight);
+    public void manualDrive(double xAxis, double yAxis, double leftTrigger, double rightTrigger) {
         double turn = -leftTrigger + rightTrigger;
 
         xAxisOutput = xAxis;

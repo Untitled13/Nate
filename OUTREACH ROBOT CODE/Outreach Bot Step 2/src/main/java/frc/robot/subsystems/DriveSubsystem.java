@@ -35,9 +35,9 @@ public class DriveSubsystem extends Subsystem {
 
     public void manualDrive(double xAxis, double yAxis, double leftTrigger, double rightTrigger) {
          // EDITABLES
-            double xAxisSmooth = .15;
-            double yAxisSmooth = .15;
-            double turnSmooth = .15;
+            final double xAxisSmooth = .15;
+            final double yAxisSmooth = .15;
+            final double turnSmooth = .15;
  
          // INPUTS
             double turn = -leftTrigger + rightTrigger;
