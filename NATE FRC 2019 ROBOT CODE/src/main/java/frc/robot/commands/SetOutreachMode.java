@@ -1,43 +1,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-
-public class ManualArmControl extends Command {
-
-  public ManualArmControl() {
-    requires(Robot.armSubsystem);
+public class SetOutreachMode extends Command {
+  boolean mode;
+  public SetOutreachMode() {
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
-    Robot.armSubsystem.armEncoderReset();
-
+    mode = Robot.oi.isOutreachMode;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
- 
-  Robot.armSubsystem.armControl(Robot.oi.manipulator.getY(), Robot.oi.armLimitBypassWristLock.get());  Robot.armSubsystem.armAngle();
-  Robot.armSubsystem.armEncoderUpperReset(Robot.oi.manipulator.getY(), Robot.oi.manipulator.getPOV());
-  Robot.armSubsystem.armEncoderLowerReset(Robot.oi.manipulator.getY(), Robot.oi.manipulator.getPOV());
-  
+    Robot.oi.isOutreachMode = !Robot.oi.isOutreachMode;
+    SmartDashboard.putBoolean("OutreachMode", !mode);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.armSubsystem.stop();
   }
 
   // Called when another command which requires one or more of the same

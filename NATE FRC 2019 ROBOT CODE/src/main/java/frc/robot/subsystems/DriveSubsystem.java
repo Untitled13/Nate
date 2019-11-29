@@ -5,33 +5,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualDrive;
 
 
 public class DriveSubsystem extends Subsystem {
-
 	public boolean tunable = false;
 
 	private WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
 
 	private DifferentialDrive drive;
-
-	private double leftSpeed;
-	private double rightSpeed;
-
-	private double leftFinal;
-	private double rightFinal;
-
-	private double leftOutput;
-	private double rightOutput;
-
-	private double outreachDriveSpeed;
-
-	private double lineOffSet;
-
-	private boolean lineFollow;
 
 	public DriveSubsystem(boolean tunable) {
 		this.tunable = tunable;
@@ -70,29 +54,34 @@ public class DriveSubsystem extends Subsystem {
 		rightSlave.follow(rightMaster);
 	}
 
+	public double getLeftOutput() {
+		return leftMaster.get();
+	}
+
+	public double getRightOutput() {
+		return rightMaster.get();
+	}
+
 	//DRIVE MOTORS
 	public void manualDrive(double leftPower, double rightPower, boolean rightControl, boolean leftControl, double leftTurn, double rightTurn) {
-		if (!lineFollow) {
-			//left drive smooth
-			// if (leftPower > leftSpeed) {
-				leftSpeed = leftSpeed + ((leftPower - leftSpeed) * SmartDashboard.getNumber("driveSmooth", .5));
-			// } else if(leftPower < leftSpeed) {
-			// 	leftSpeed = leftSpeed - ((leftSpeed - leftPower) * SmartDashboard.getNumber("driveSmooth", .5));
-			// }
+		// left drive smooth
+			double leftSpeed = getLeftOutput() + ((leftPower - getLeftOutput()) * RobotMap.driveSmooth);
 
-			//right drive smooth
-			// if (rightPower > rightSpeed) {
-				rightSpeed = rightSpeed + ((rightPower - rightSpeed) * SmartDashboard.getNumber("driveSmooth", .5));
-			// } else if(rightPower < rightSpeed) {
-			// 	rightSpeed = rightSpeed - ((rightSpeed - rightPower) * SmartDashboard.getNumber("driveSmooth", .5));
-			// }
+		//right drive smooth
+			double rightSpeed = getRightOutput() + ((rightPower - getRightOutput()) * RobotMap.driveSmooth);
 
-			//drive speed
-			leftFinal = leftSpeed * RobotMap.driveSpeed * outreachDriveSpeed;
-			rightFinal = rightSpeed * RobotMap.driveSpeed * outreachDriveSpeed;
+		//drive speed
+			double leftFinal = leftSpeed * RobotMap.driveSpeed;
+			double rightFinal = rightSpeed * RobotMap.driveSpeed;
 
+			if (Robot.oi.isOutreachMode) {
+				leftFinal = leftFinal * RobotMap.OutreachDriveSpeed;
+				rightFinal = rightFinal * RobotMap.OutreachDriveSpeed;
+			}
 
-			// right control
+		// right control
+			double leftOutput;
+			double rightOutput;
 			if (rightControl) {
 				// MAKE WEELS ALLWAYS SLOW, AND NOT ACCELERATE
 				if (rightTurn > 0) {
@@ -107,7 +96,7 @@ public class DriveSubsystem extends Subsystem {
 				leftOutput = leftFinal;
 				rightOutput = rightFinal;
 			}
-		}
+			driveMotors(leftOutput, rightOutput);
 	}
 
 	//GET ENCODOR OUTPUT
@@ -119,9 +108,9 @@ public class DriveSubsystem extends Subsystem {
 		return rightMaster.getSelectedSensorPosition();
 	}
 
-	public void lineFollow(double XValue, double joystick, boolean buttonActivate) {
+	public void lineFollow(double LimelightXValue, double joystickY) {
 
-		lineOffSet = (XValue / 15 * .25);
+		double lineOffSet = (LimelightXValue / 15 * .25);
 		
 		// if (targetArea >= 8 || targetArea == 0) {
 		// 	// KEEP LINE OFFSET THE SAME
@@ -133,19 +122,14 @@ public class DriveSubsystem extends Subsystem {
 		// 	}
 		// }
 
-		if (buttonActivate) {
-			lineFollow = true;
-			leftOutput = joystick - lineOffSet;
-			rightOutput = joystick + lineOffSet;
-		} else {
-			lineFollow = false;
-		}
-		driveMotors();
+		double leftOutput = joystickY - lineOffSet;
+		double rightOutput = joystickY + lineOffSet;
+		driveMotors(leftOutput, rightOutput);
 
 	}
 
-	public void driveMotors() {
-		drive.tankDrive(leftOutput, rightOutput);
+	public void driveMotors(double left, double right) {
+		drive.tankDrive(left, right);
 	}
 
 	public void stop() {

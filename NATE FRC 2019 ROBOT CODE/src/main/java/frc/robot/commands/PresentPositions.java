@@ -64,26 +64,21 @@ public class PresentPositions extends Command {
     }
 
     dateStamp = (int)System.currentTimeMillis();
-    Robot.armSubsystem.setArmGoto(true);
-    Robot.extentionSubsystem.setExtentionGoto(true);
     presetPostitonGoto = false;
     Robot.Limelight.limelightSetPipeline(limelightPipeline);
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.armSubsystem.armSetAngle(armPresetPosition / 100);
-    Robot.armSubsystem.armAngle();
-    Robot.extentionSubsystem.extentionSetPosition(extentionPresetPosition / 100);
-    Robot.extentionSubsystem.extentionPosition();
+    boolean armGoto = Robot.armSubsystem.armSetAngle(armPresetPosition / 100);
+    boolean extentionGoto = Robot.extentionSubsystem.extentionSetPosition(extentionPresetPosition / 100);
     // Robot.WristSubsystem.wristSetAngle(wristPresetPosition / 100);
     // Robot.WristSubsystem.wristPosition(Robot.oi.wristEncoder.get());
     dateSeconds = (int)System.currentTimeMillis();
 
     // if (!Robot.armSubsystem.armGoto && !Robot.extentionSubsystem.extentionGoto && !Robot.WristSubsystem.wristGoto) {
-    if (!Robot.armSubsystem.getArmGoto() && !Robot.extentionSubsystem.getExtentionGoto()) {
+    if (!armGoto && !extentionGoto) {
       presetPostitonGoto = true;
     }
 

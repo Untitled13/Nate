@@ -12,6 +12,10 @@ import frc.robot.commands.SetOutreachMode;
 import frc.robot.sensors.ADIS16448_IMU;
 
 public class OI {
+  public boolean isOutreachMode = false;
+  public boolean isNoArm = false;
+  public boolean followLine = false;
+
   public Joystick manipulator = new Joystick(0);
   public Joystick left = new Joystick(1);
   public Joystick right = new Joystick(2);
@@ -81,17 +85,17 @@ public class OI {
     Command armVerticle = new PresentPositions(7);
     this.armVerticle.whenPressed(armVerticle); 
 
-    Command robotLift = new LiftRobot(true);
-    this.robotLift.toggleWhenPressed(robotLift);
+    Command robotLift = new LiftRobot();
+    this.robotLift.whenPressed(robotLift);
 
     Command deployRamps = new DeployRamps();
     this.deployRamps.whenPressed(deployRamps);
 
-    Command outreachMode = new SetOutreachMode(false);
-    this.outreachMode.toggleWhenPressed(outreachMode);
+    Command outreachMode = new SetOutreachMode();
+    this.outreachMode.whenPressed(outreachMode);
 
-    Command noArm = new SetNoArm(false);
-    this.noArm.toggleWhenPressed(noArm);
+    Command noArm = new SetNoArm();
+    this.noArm.whenPressed(noArm);
 
     Command CameraServoFront = new SetCameraAngle(RobotMap.cameraFaceFrontAngle);
     this.CameraServoFront.whenPressed(CameraServoFront);
@@ -99,5 +103,5 @@ public class OI {
     Command CameraServoBack = new SetCameraAngle(RobotMap.cameraFaceBackAngle);
     this.CameraServoBack.whenPressed(CameraServoBack);
 
+  }
 }
- }

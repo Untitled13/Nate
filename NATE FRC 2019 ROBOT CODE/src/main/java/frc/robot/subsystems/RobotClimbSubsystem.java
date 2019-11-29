@@ -14,28 +14,38 @@ public class RobotClimbSubsystem extends Subsystem {
   private Solenoid rampPistonExtend;
   private Solenoid rampPistonRetract;
 
-  //lift robot
-  public void liftRobot(Boolean lift) {
-    robotLiftPistonExtend.set(!lift);
-    robotLiftPistonRetract.set(lift);
-  
+  // private boolean robotLifted = false;
+
+  public RobotClimbSubsystem() {
+
     // SETUP SOLENOIDS
     robotLiftPistonExtend = new Solenoid(RobotMap.PCM, RobotMap.liftExtendSolenoid);
     robotLiftPistonRetract = new Solenoid(RobotMap.PCM, RobotMap.liftRetractSolenoid);
+    robotLiftPistonExtend.set(false);
+    robotLiftPistonRetract.set(true);
 
     rampPistonExtend = new Solenoid(RobotMap.PCM, RobotMap.rampExtendSolenoid);
     rampPistonRetract = new Solenoid(RobotMap.PCM, RobotMap.rampRetractSolenoid);
+    rampPistonExtend.set(false);
+    rampPistonRetract.set(true);
+  }
+
+  //lift robot
+  public void liftRobot() {
+    boolean robotLifted = robotLiftPistonExtend.get();
+    robotLiftPistonExtend.set(robotLifted);
+    robotLiftPistonRetract.set(!robotLifted);
   }  
   
   //deploy ramps
   public void rampDeploy() {
-    rampPistonExtend.set(false);
-    rampPistonRetract.set(true); 
+    rampPistonExtend.set(true);
+    rampPistonRetract.set(false); 
   
     Timer.delay(.5);
 
-    rampPistonExtend.set(true);
-    rampPistonRetract.set(false);
+    rampPistonExtend.set(false);
+    rampPistonRetract.set(true);
   }
 
   @Override

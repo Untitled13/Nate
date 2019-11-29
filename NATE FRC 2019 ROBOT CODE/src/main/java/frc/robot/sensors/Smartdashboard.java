@@ -88,11 +88,9 @@ public class Smartdashboard  extends Subsystem {
     // SmartDashboard.putNumber("PDPWristAmp", Robot.PDP.PDPWristAmp());
     // SmartDashboard.putNumber("PDPLeftDriveAmp", Robot.PDP.PDPLeftDriveAmp());
     // SmartDashboard.putNumber("PDPRightDriveAmp", Robot.PDP.PDPRightDriveAmp());
-    SmartDashboard.putBoolean("OutreachMode", Robot.armSubsystem.getOutreachMode());
-    SmartDashboard.putBoolean("NoArm", Robot.armSubsystem.getNoArm());
     SmartDashboard.putNumber("Arm Percentage", Robot.armSubsystem.getArmPercentage());
-    SmartDashboard.putNumber("Extention Percentage", Robot.extentionSubsystem.getExtentionPercentage());
-    SmartDashboard.putNumber("Wrist Percentage", Robot.WristSubsystem.getWristPercentage());
+    SmartDashboard.putNumber("Extention Percentage", Robot.extentionSubsystem.getExtentionPosition());
+    SmartDashboard.putNumber("Wrist Percentage", Robot.WristSubsystem.getWristPosition());
     SmartDashboard.putNumber("ArmAmp", Robot.PDP.PDPArmAmp());
     SmartDashboard.putNumber("ExtentionAmp", Robot.PDP.PDPExtentionAmp());
     SmartDashboard.putNumber("WristAmp", Robot.PDP.PDPWristAmp());

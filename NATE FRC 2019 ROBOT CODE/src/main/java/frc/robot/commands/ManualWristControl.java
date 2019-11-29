@@ -11,13 +11,13 @@ public class ManualWristControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.WristSubsystem.calibrateWrist();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.WristSubsystem.wristPosition();
-    Robot.WristSubsystem.wristControl(Robot.oi.manipulator.getZ() , Robot.oi.wristExtentionlimitBypass.get());
+    Robot.WristSubsystem.wristControl(Robot.oi.manipulator.getZ() , !Robot.oi.wristExtentionlimitBypass.get());
     Robot.WristSubsystem.wristEncoderUpperReset();
     Robot.WristSubsystem.wristEncoderLowerReset();
 

@@ -9,15 +9,11 @@ import frc.robot.RobotMap;
 import frc.robot.commands.ManualVacuumPumpControl;
 
 public class VacuumPumpSubsystem extends Subsystem {
-
     public boolean tunable = false;
 
     private final WPI_VictorSPX vacuumPumpMaster, vacuumPumpSlave;
-
-    private double vacuumPumpOnOff;
-
+    
     private Solenoid vacuumSolenoid = new Solenoid(RobotMap.PCM, RobotMap.vacuumSolenoid);
-
 
 	public VacuumPumpSubsystem(boolean tunable) {
         this.tunable = tunable;
@@ -36,19 +32,11 @@ public class VacuumPumpSubsystem extends Subsystem {
         //pumps
         if (pumpOn) {
             vacuumPumpMaster.set(RobotMap.vacuumPumpSpeed);
-            vacuumPumpOnOff = 1;
+            airEqualizerClose();
         } else if (pumpOff) {
             vacuumPumpMaster.set(0);
-            vacuumPumpOnOff = 0;
-        }
-
-        //air equalizer valve
-        if (vacuumPumpOnOff == 1) {
-            airEqualizerClose();
-          }
-          else {
             airEqualizerOpen();
-          }
+        }
 
     }
 

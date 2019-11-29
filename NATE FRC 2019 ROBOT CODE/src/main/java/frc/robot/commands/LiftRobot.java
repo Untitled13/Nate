@@ -3,24 +3,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class SetNoArm extends Command {
-  boolean mode = false;
-  public SetNoArm(boolean mode) {
-    this.mode = mode;
+public class LiftRobot extends Command {
+  public LiftRobot() {
+   
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.armSubsystem.setNoArm(mode);
-    Robot.extentionSubsystem.setNoExtention(mode);
-    Robot.WristSubsystem.setNoWrist(mode);
+    Robot.RobotClimbSubsystem.liftRobot();    
   }
 
   // Make this return true when this Command no longer needs to run execute()

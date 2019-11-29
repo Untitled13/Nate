@@ -1,12 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class SetOutreachMode extends Command {
-  boolean mode = false;
-  public SetOutreachMode(boolean mode) {
-    this.mode = mode;
+public class SetNoArm extends Command {
+  public SetNoArm() {
   }
 
   // Called just before this Command runs the first time
@@ -18,15 +17,14 @@ public class SetOutreachMode extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.armSubsystem.setArmOutreachMode(mode);
-    Robot.extentionSubsystem.setExtentionOutreachMode(mode);
-    Robot.WristSubsystem.setWristOutreachMode(mode);
+    SmartDashboard.putBoolean("NoArm", Robot.oi.isNoArm);
+    Robot.oi.isNoArm = !Robot.oi.isNoArm;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

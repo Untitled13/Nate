@@ -15,10 +15,11 @@ public class ManualDrive extends Command {
 
   @Override
   protected void execute() {
-   
-    Robot.driveSubsystem.manualDrive(Robot.oi.left.getY(), Robot.oi.right.getY(), Robot.oi.rightControlButton.get(), Robot.oi.lineFollowButton.get(), Robot.oi.right.getY(), -Robot.oi.left.getY());
-    Robot.driveSubsystem.driveMotors();
-
+    if (Robot.oi.left.getTrigger()) {
+      Robot.driveSubsystem.lineFollow(Robot.Limelight.limelightX(), Robot.oi.left.getY());
+    } else {
+      Robot.driveSubsystem.manualDrive(Robot.oi.left.getY(), Robot.oi.right.getY(), Robot.oi.rightControlButton.get(), Robot.oi.lineFollowButton.get(), Robot.oi.right.getY(), -Robot.oi.left.getY());
+    }
   }
 
   @Override
