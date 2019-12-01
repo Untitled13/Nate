@@ -6,7 +6,6 @@ import frc.robot.sensors.Camera;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.PDP;
 import frc.robot.sensors.ShuffleBoard;
-import frc.robot.sensors.Smartdashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CameraServoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,7 +24,6 @@ public class Robot extends TimedRobot {
   public static CameraServoSubsystem cameraServoSubsystem = new CameraServoSubsystem(false);
   public static Camera cameraServer = new Camera();
   public static RobotClimbSubsystem RobotClimbSubsystem = new RobotClimbSubsystem();
-  public static Smartdashboard Smartdashboard = new Smartdashboard();
   public static ShuffleBoard ShuffleBoard = new ShuffleBoard();
   public static Limelight Limelight = new Limelight();
   public static PDP PDP = new PDP();

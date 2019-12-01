@@ -94,31 +94,4 @@ public class RobotMap {
       public static final int placeBallInRocketPort = 10; //BUTTON number
       public static final int placeBallInCargoShipPort = 0; //BUTTON number
       public static final int armVerticlePort = 11; //BUTTON number
-
-    // ARM PRESET POSITIONS
-      // public static double armPickUpHatchPosition = 100; //between 0 & 100, higher = higher up
-      // public static double armPickUpBallPosition = 100; //between 0 & 100, higher = higher up
-      // public static double armPickUpBallOffFloorPosition = 18; //between 0 & 100, higher = higher up
-      // public static double armPlaceHatchPosition = 30; //between 0 & 100, higher = higher up
-      // public static double armPlaceBallInRocketPosition = 20; //between 0 & 100, higher = higher up
-      // public static double armPlaceBallInCargoShipPosition = 35; //between 0 & 100, higher = higher up
-      // public static double armVerticlePosition = 65; //between 0 & 100, higher = higher up
-
-    // EXTENTION PRESET POSITIONS
-      // public static double extentionPickUpHatchPosition = 90; //between 0 & 100, higher = farther out
-      // public static double extentionPickUpBallPosition = 90; //between 0 & 100, higher = farther out
-      // public static double extentionPickUpBallOffFloorPosition = 50; //between 0 & 100, higher = farther out
-      // public static double extentionPlaceHatchPosition = 20; //between 0 & 100, higher = farther out
-      // public static double extentionPlaceBallInRocketPosition = 70; //between 0 & 100, higher = farther out
-      // public static double extentionPlaceBallInCargoShipPosition = 30; //between 0 & 100, higher = farther out
-      // public static double extentionVerticlePosition = 50; //between 0 & 100, higher = farther out
-
-    // WRIST PRESET POSITIONS
-      // public static double wristPickUpHatchPosition = 100; //between 0 & 100, higher = higher up
-      // public static double wristPickUpBallPosition = 100; //between 0 & 100, higher = higher up
-      // public static double wristPickUpBallOffFloorPosition = 18; //between 0 & 100, higher = higher up
-      // public static double wristPlaceHatchPosition = 30; //between 0 & 100, higher = higher up
-      // public static double wristPlaceBallInRocketPosition = 20; //between 0 & 100, higher = higher up
-      // public static double wristPlaceBallInCargoShipPosition = 35; //between 0 & 100, higher = higher up
-      // public static double wristVerticlePosition = 65; //between 0 & 100, higher = higher up
-    }
+}

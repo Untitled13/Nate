@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualWristControl;
@@ -121,7 +120,6 @@ public class WristSubsystem extends Subsystem {
 
   //sets default wrist upper encoder values
   public void wristEncoderUpperReset() {
-    SmartDashboard.putBoolean("upper limit", wristUpperLimitSwitch.get());
     // boolean upperLimitSwitch = !wristUpperLimitSwitch.get();
     //   if (upperLimitSwitch && !wristUpperSet) {
     //       wristOffset = -wristRawEncoder + SmartDashboard.getNumber("wristEncoderTravelDistence", 0);
@@ -133,7 +131,6 @@ public class WristSubsystem extends Subsystem {
 
   // sets default wrist lower encoder values
   public void wristEncoderLowerReset() {
-    SmartDashboard.putBoolean("lower limit", wristLowerLimitSwitch.get());
   //   boolean lowerLimitSwitch = !wristLowerLimitSwitch.get();
   //     if (lowerLimitSwitch && !wristLowerSet) {
   //         wristOffset = -wristRawEncoder;

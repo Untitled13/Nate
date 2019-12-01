@@ -130,7 +130,7 @@ public class ExtentionSubsystem extends Subsystem {
       if (extentionPosition > 1) {
         extentionPosition = 1; 
       } else if(extentionPosition < 0){
-      
+        extentionPosition = 0; 
       }
 
       //finds the diffrence between where the extention shound be, and where it is

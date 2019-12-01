@@ -25,7 +25,6 @@ public class PresentPositions extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.Smartdashboard.pullFromSmartdashboard();
     if (position == 1) {
       armPresetPosition = Robot.ShuffleBoard.armPickUpHatchPosition.getDouble(50);
       extentionPresetPosition = Robot.ShuffleBoard.extentionPickUpHatchPosition.getDouble(50);

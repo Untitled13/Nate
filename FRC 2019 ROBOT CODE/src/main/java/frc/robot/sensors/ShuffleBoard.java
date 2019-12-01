@@ -1,12 +1,10 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.StopUpdateShuffleBoard;
 import frc.robot.commands.UpdateShuffleBoard;
 
@@ -167,6 +165,5 @@ public class ShuffleBoard{
             public void init() {
                 Debug.add(new UpdateShuffleBoard());
                 Debug.add(new StopUpdateShuffleBoard());
-                SmartDashboard.putString("init", "init");
             }
 }
