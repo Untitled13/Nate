@@ -34,7 +34,6 @@ public class DriveSubsystem extends Subsystem {
 		rightSlave.configFactoryDefault();
 		
 		// LEFT MASTER
-		leftMaster.configNeutralDeadband(RobotMap.driveNeutralDeadband, RobotMap.driveTimeoutMs);
 		leftMaster.setInverted(true);
 		leftSlave.setInverted(true);
 		leftMaster.setSensorPhase(false);
@@ -44,7 +43,6 @@ public class DriveSubsystem extends Subsystem {
 		leftSlave.follow(leftMaster);
 		
 		// RIGHT MASTER
-		rightMaster.configNeutralDeadband(RobotMap.driveNeutralDeadband, RobotMap.driveTimeoutMs);
 		rightMaster.setInverted(false);
 		rightSlave.setInverted(false);
 		rightMaster.setSensorPhase(false);	
@@ -65,18 +63,19 @@ public class DriveSubsystem extends Subsystem {
 	//DRIVE MOTORS
 	public void manualDrive(double leftPower, double rightPower, boolean rightControl, boolean leftControl, double leftTurn, double rightTurn) {
 		// left drive smooth
-			double leftSpeed = getLeftOutput() + ((leftPower - getLeftOutput()) * RobotMap.driveSmooth);
+			double leftSpeed = getLeftOutput() + ((leftPower - getLeftOutput()) * Robot.ShuffleBoard.driveSmooth.getDouble(RobotMap.defaultDriveSmooth));
+			
 
 		//right drive smooth
-			double rightSpeed = getRightOutput() + ((rightPower - getRightOutput()) * RobotMap.driveSmooth);
+			double rightSpeed = getRightOutput() + ((rightPower - getRightOutput()) * Robot.ShuffleBoard.driveSmooth.getDouble(RobotMap.defaultDriveSmooth));
 
 		//drive speed
-			double leftFinal = leftSpeed * RobotMap.driveSpeed;
-			double rightFinal = rightSpeed * RobotMap.driveSpeed;
+			double leftFinal = leftSpeed * Robot.ShuffleBoard.driveSpeed.getDouble(RobotMap.defaultDriveSpeed);
+			double rightFinal = rightSpeed * Robot.ShuffleBoard.driveSpeed.getDouble(RobotMap.defaultDriveSpeed);
 
 			if (Robot.oi.isOutreachMode) {
-				leftFinal = leftFinal * RobotMap.OutreachDriveSpeed;
-				rightFinal = rightFinal * RobotMap.OutreachDriveSpeed;
+				leftFinal = leftFinal * Robot.ShuffleBoard.outreachModeDriveSpeed.getDouble(RobotMap.defaultOutreachDriveSpeed);
+				rightFinal = rightFinal * Robot.ShuffleBoard.outreachModeDriveSpeed.getDouble(RobotMap.defaultOutreachDriveSpeed);;
 			}
 
 		// right control
@@ -85,10 +84,10 @@ public class DriveSubsystem extends Subsystem {
 			if (rightControl) {
 				// MAKE WEELS ALLWAYS SLOW, AND NOT ACCELERATE
 				if (rightTurn > 0) {
-					leftOutput = rightFinal;
-					rightOutput = (rightFinal + (rightTurn * RobotMap.rightControlLeftEffectiveness));
+					leftOutput = rightFinal; 
+					rightOutput = (rightFinal + (rightTurn * Robot.ShuffleBoard.driveRightControlLeftJoyEffectiveness.getDouble(RobotMap.defaultRightControlLeftEffectiveness)));
 				} else {
-					leftOutput = (rightFinal - (rightTurn * RobotMap.rightControlLeftEffectiveness));
+					leftOutput = (rightFinal - (rightTurn * Robot.ShuffleBoard.driveRightControlLeftJoyEffectiveness.getDouble(RobotMap.defaultRightControlLeftEffectiveness)));
 					rightOutput = rightFinal;
 				}
 				

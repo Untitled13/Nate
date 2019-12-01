@@ -23,10 +23,6 @@ public class ArmSubsystem extends Subsystem {
   private DigitalInput armLowerLimitSwitch;
   private DigitalInput armUpperLimitSwitch;
 
-  private NetworkTableEntry armP;
-  private NetworkTableEntry armI;
-  private NetworkTableEntry armD;
-
 	public ArmSubsystem(boolean tunable) {
 		this.tunable = tunable;
 
@@ -41,25 +37,11 @@ public class ArmSubsystem extends Subsystem {
     armUpperLimitSwitch = new DigitalInput(RobotMap.armUpperLimitSwitchPort);
 
     // SETUP PID CONTROL IN SHUFFLEBOARD
-    armP = Robot.ShuffleBoard.Tune.add("armPID-P", 0).getEntry();
-    armI = Robot.ShuffleBoard.Tune.add("armPID-I", 0).getEntry();
-    armD = Robot.ShuffleBoard.Tune.add("armPID-D", 0).getEntry();
+    
   }
 
   public double getArmRawEncoder() {
     return armMaster.getSelectedSensorPosition();
-  }
-
-  public double getP() {
-    return armP.getDouble(0);
-  }
-
-  public double getI() {
-    return armI.getDouble(0);
-  }
-
-  public double getD() {
-    return armD.getDouble(0);
   }
 
   public double getArmOutput() {
@@ -68,14 +50,14 @@ public class ArmSubsystem extends Subsystem {
 
   //Manualy move arm
   public void armControl(double armSpeed, boolean armLimitBypass) {
-    double armMove = ((-armSpeed) / RobotMap.armSpeed);
+    double armMove = ((-armSpeed) * Robot.ShuffleBoard.armSpeed.getDouble(RobotMap.defaultArmSpeed));
 
     if (Robot.oi.isOutreachMode) {
-      armMove = armMove * RobotMap.OutreachArmSpeed;
-    }
+      armMove = armMove * Robot.ShuffleBoard.outreachModeArmSpeed.getDouble(RobotMap.defaultOutreachArmSpeed);
+    } 
 
     //Arm smoothing
-    double armFinal = getArmOutput() + ((armMove - getArmOutput()) * RobotMap.armSmooth);
+    double armFinal = getArmOutput() + ((armMove - getArmOutput()) * Robot.ShuffleBoard.armSmooth.getDouble(RobotMap.defaultArmSmooth));
 
     //Start driveMorer, and armBrake
     driveMoter(armFinal, armLimitBypass);
@@ -86,22 +68,34 @@ public class ArmSubsystem extends Subsystem {
     
     //upper soft limit
     if (getArmPercentage() >= .8 && armOutput >= 0 && !armLimitBypass) {
-        armOutput = (armOutput / (getArmPercentage() * 4)); 
+      armOutput = (armOutput / (getArmPercentage() * 4)); 
+      Robot.ShuffleBoard.armUpperSoftLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.armUpperSoftLimit.setValue(false);
     }
     
     //upper hard limit
     if (armOutput > 0 && getArmPercentage() >= 1 && !armLimitBypass) {
       armOutput = 0;
+      Robot.ShuffleBoard.armUpperHardLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.armUpperHardLimit.setValue(false);
     }
 
     //lower soft limit
     if (getArmPercentage() <= .2 && armOutput <= 0 && !armLimitBypass) {
       armOutput = (armOutput / (Math.abs(1 - getArmPercentage()) * 7)); 
+      Robot.ShuffleBoard.armLowerSoftLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.armLowerSoftLimit.setValue(false);
     }
 
     //lower hard limit
     if (armOutput < 0 && getArmPercentage() <= 0 && !armLimitBypass) {
       armOutput = 0;
+      Robot.ShuffleBoard.armLowerHardLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.armLowerHardLimit.setValue(false);
     }
 
     //lower limit, to stop wires from being pinched, and the suction cup does not get jamed
@@ -118,6 +112,7 @@ public class ArmSubsystem extends Subsystem {
     } else {
       armMaster.set(0);
     }
+    Robot.ShuffleBoard.armOutput.setValue(armMaster.get());
   }
 
   //decides when the arm break should be applyed
@@ -132,6 +127,8 @@ public class ArmSubsystem extends Subsystem {
   //sends "setbrake" to arm
   public void setBrake(boolean state) {
     armBrakeSolenoid.set(state);
+    Robot.ShuffleBoard.armBrake.setValue(state);
+    Robot.ShuffleBoard.solenoidBrakeRetract.setValue(state);
   }
 
   //resets arm encoder upper value when limit switch is pressed
@@ -170,6 +167,7 @@ public class ArmSubsystem extends Subsystem {
   //gets the arm percentage (0-1) value from encoder
   public double getArmPercentage() {
     double armPercentage = ((armEncoderLowerLimit - getArmRawEncoder()) * (1/(armEncoderLowerLimit - armEncoderUpperLimit)));
+    Robot.ShuffleBoard.armPercent.setValue(armPercentage);
     return armPercentage;
   }
 
@@ -211,11 +209,13 @@ public class ArmSubsystem extends Subsystem {
 
       //sends the arm's power to the moter
       driveMoter(armDifference, false);
+      Robot.ShuffleBoard.armGoto.setValue(true);
       return true;
 
     //called when the arm is at set position
     } else {
       driveMoter(0, false);
+      Robot.ShuffleBoard.armGoto.setValue(false);
       return false;
     }
   }

@@ -3,7 +3,6 @@ package frc.robot.sensors;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.commands.UpdateSmartDashboard;
 
 public class Smartdashboard  extends Subsystem {
   public double armPreset1;
@@ -135,7 +134,7 @@ public class Smartdashboard  extends Subsystem {
 
   @Override
 	  public void initDefaultCommand() {
-      setDefaultCommand(new UpdateSmartDashboard());
+      // setDefaultCommand(new UpdateSmartDashboard());
     
     }
 

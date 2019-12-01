@@ -72,14 +72,14 @@ public class WristSubsystem extends Subsystem {
 
   //Manualy move arm
   public void wristControl(double wristSpeed, boolean wristLimitBypass) {
-      double wristMove = ((-wristSpeed) / RobotMap.wristSpeed);
+      double wristMove = ((-wristSpeed) / Robot.ShuffleBoard.wristSpeed.getDouble(RobotMap.defaultWristSpeed));
 
       if (Robot.oi.isOutreachMode) {
-        wristMove = wristMove * RobotMap.OutreachWristSpeed;
+        wristMove = wristMove * Robot.ShuffleBoard.outreachModeWristSpeed.getDouble(RobotMap.defaultOutreachWristSpeed);
       }
 
       //Arm smoothing
-        double wristFinal = getWristOutput() + ((wristMove - getWristOutput()) * RobotMap.wristSmooth);
+        double wristFinal = getWristOutput() + ((wristMove - getWristOutput()) * Robot.ShuffleBoard.wristSmooth.getDouble(RobotMap.defaultWristSmooth));
       
       //run driveMoter
       driveMoter(wristFinal, wristLimitBypass);
@@ -93,6 +93,9 @@ public class WristSubsystem extends Subsystem {
         wristOutput = (wristOutput / (getWristPosition() * 3)); 
         if (getWristPosition() >= 1) {
           wristOutput = 0;
+          Robot.ShuffleBoard.wristUpperSoftLimit.setValue(true);
+        } else {
+          Robot.ShuffleBoard.wristUpperSoftLimit.setValue(false);
         }
     }
 
@@ -101,6 +104,9 @@ public class WristSubsystem extends Subsystem {
       wristOutput = (wristOutput / (Math.abs(1 - getWristPosition()) * 3)); 
       if (getWristPosition() <= 0) {
         wristOutput = 0;
+        Robot.ShuffleBoard.wristLowerSoftLimit.setValue(true);
+      } else {
+        Robot.ShuffleBoard.wristLowerSoftLimit.setValue(false);
       }
     }
 
@@ -110,7 +116,7 @@ public class WristSubsystem extends Subsystem {
     } else {
       wristMaster.set(0);
     }
-    
+    Robot.ShuffleBoard.wristOutput.setValue(wristMaster.get());
   }
 
   //sets default wrist upper encoder values
@@ -141,6 +147,7 @@ public class WristSubsystem extends Subsystem {
   public double getWristPosition() {
     wristRawEncoder = wristEncoder.get();
     double wristPercentage = ((wristRawEncoder / 650) + wristOffset);
+    Robot.ShuffleBoard.wristPercent.setValue(wristPercentage);
     return wristPercentage;
   }
 
@@ -173,11 +180,13 @@ public class WristSubsystem extends Subsystem {
 
       //sends the arm's power to the moter
       driveMoter(wristDifference, false);
+      Robot.ShuffleBoard.wristGoto.setValue(true);
       return true;
     //called when the arm is at set position
     } else {
-        driveMoter(0, false);
-        return false;
+      driveMoter(0, false);
+      Robot.ShuffleBoard.wristGoto.setValue(false);
+      return false;
     }
   }
 

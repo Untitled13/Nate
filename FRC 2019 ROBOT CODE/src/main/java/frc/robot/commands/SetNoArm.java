@@ -11,14 +11,14 @@ public class SetNoArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    SmartDashboard.putBoolean("NoArm", Robot.oi.isNoArm);
+    Robot.oi.isNoArm = !Robot.oi.isNoArm;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putBoolean("NoArm", Robot.oi.isNoArm);
-    Robot.oi.isNoArm = !Robot.oi.isNoArm;
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

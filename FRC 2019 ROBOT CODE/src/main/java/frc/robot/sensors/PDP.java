@@ -42,4 +42,9 @@ public class PDP {
     double rightAmp = right1Amp + right2Amp;
     return rightAmp;
   }
+
+  public double PDPTemperature() {
+    double temperature = pdp.getTemperature();
+    return temperature;
+  }
 }

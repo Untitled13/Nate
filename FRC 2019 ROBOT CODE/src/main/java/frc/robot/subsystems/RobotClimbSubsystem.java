@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class RobotClimbSubsystem extends Subsystem {
@@ -35,17 +36,23 @@ public class RobotClimbSubsystem extends Subsystem {
     boolean robotLifted = robotLiftPistonExtend.get();
     robotLiftPistonExtend.set(robotLifted);
     robotLiftPistonRetract.set(!robotLifted);
+    Robot.ShuffleBoard.solenoidLiftExtend.setValue(robotLiftPistonExtend.get());
+    Robot.ShuffleBoard.solenoidLiftRetract .setValue(robotLiftPistonRetract.get());
   }  
   
   //deploy ramps
   public void rampDeploy() {
     rampPistonExtend.set(true);
     rampPistonRetract.set(false); 
+    Robot.ShuffleBoard.solenoidRampsExtend.setValue(rampPistonExtend.get());
+    Robot.ShuffleBoard.solenoidRampsRetract.setValue(rampPistonRetract.get());
   
     Timer.delay(.5);
 
     rampPistonExtend.set(false);
     rampPistonRetract.set(true);
+    Robot.ShuffleBoard.solenoidRampsExtend.setValue(rampPistonExtend.get());
+    Robot.ShuffleBoard.solenoidRampsRetract.setValue(rampPistonRetract.get());
   }
 
   @Override

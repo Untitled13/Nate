@@ -49,9 +49,9 @@ public class ExtentionSubsystem extends Subsystem {
       //set "extentionSpeed" to extend
       double extentionSpeed;
       if (extend) {
-        extentionSpeed = RobotMap.ExtentionSpeed + offset;
+        extentionSpeed = Robot.ShuffleBoard.extentionSpeed.getDouble(RobotMap.defaultExtentionSpeed) + offset;
       } else if (retract) {
-        extentionSpeed = -RobotMap.ExtentionSpeed - offset;
+        extentionSpeed = -Robot.ShuffleBoard.extentionSpeed.getDouble(RobotMap.defaultExtentionSpeed) - offset;
       } else {
         extentionSpeed = 0;
       }
@@ -60,11 +60,11 @@ public class ExtentionSubsystem extends Subsystem {
       double extentionMove = ((extentionSpeed) / 2);
 
       if (Robot.oi.isOutreachMode) {
-        extentionMove = extentionMove * RobotMap.extentionSmooth;
+        extentionMove = extentionMove * Robot.ShuffleBoard.extentionSmooth.getDouble(RobotMap.defaultExtentionSmooth);
       }
 
       //extention smoothing
-      double extentionFinal = getExtentionOutput() + ((extentionMove - getExtentionOutput())* RobotMap.extentionSmooth);
+      double extentionFinal = getExtentionOutput() + ((extentionMove - getExtentionOutput())* Robot.ShuffleBoard.extentionSmooth.getDouble(RobotMap.defaultExtentionSmooth));
 
       //send extentionFinal to ouput
       driveMoter(extentionFinal, extentionLimitBypass);
@@ -77,11 +77,17 @@ public class ExtentionSubsystem extends Subsystem {
     //sets soft upper limit
     if (getExtentionPosition() >=.95 && extentionOutput >= 0 && !extentionLimitBypass) {
       extentionOutput = (extentionOutput * (Math.abs(getExtentionPosition() - 1))); 
+      Robot.ShuffleBoard.extentionUpperSoftLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.extentionUpperSoftLimit.setValue(false);
     }
     
     //sets soft lower limit
     if (getExtentionPosition() <=.07 && extentionOutput <= 0 && !extentionLimitBypass) {
       extentionOutput = (extentionOutput / Math.abs(getExtentionPosition() - 10)); 
+      Robot.ShuffleBoard.extentionLowerSoftLimit.setValue(true);
+    } else {
+      Robot.ShuffleBoard.extentionLowerSoftLimit.setValue(false);
     }
 
     //set extention max speed
@@ -95,12 +101,13 @@ public class ExtentionSubsystem extends Subsystem {
     } else {
       extentionMaster.set(0);
     }
-    
+    Robot.ShuffleBoard.extentionOutput.setValue(extentionMaster.get());
   }
 
   //reset lower limit
   public void extentionEncoderLowerReset(){
     boolean lowerLimit = extentionLowerLimitSwitch.get();
+    Robot.ShuffleBoard.extentionLowerHardLimit.setValue(!lowerLimit);
     if (!lowerLimit) {
       extentionEncoderLowerLimit = getExtentionRawEncoder() - 3000;  
     }
@@ -110,6 +117,7 @@ public class ExtentionSubsystem extends Subsystem {
   //get extention percentage
   public double getExtentionPosition() {
     double extentionPercentage = ((getExtentionRawEncoder() - extentionEncoderLowerLimit) / (110132 ));
+    Robot.ShuffleBoard.extentionPercent.setValue(extentionPercentage);
     return extentionPercentage;
   }
 
@@ -143,10 +151,12 @@ public class ExtentionSubsystem extends Subsystem {
       }
 
       driveMoter(extentionDifference, false);
+      Robot.ShuffleBoard.extentionGoto.setValue(true);
       return true;
     //if extention is at set position
     } else {
       driveMoter(0, false);
+      Robot.ShuffleBoard.extentionGoto.setValue(false);
       return false;
     }
 

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualVacuumPumpControl;
 
@@ -30,14 +31,14 @@ public class VacuumPumpSubsystem extends Subsystem {
     public void vacuumPump(Boolean pumpOn, Boolean pumpOff) {
 
         //pumps
-        if (pumpOn) {
-            vacuumPumpMaster.set(RobotMap.vacuumPumpSpeed);
+        if (pumpOn) { 
+            vacuumPumpMaster.set(Robot.ShuffleBoard.vacuumPumpSpeed.getDouble(RobotMap.defaultVacuumPumpSpeed));
             airEqualizerClose();
         } else if (pumpOff) {
             vacuumPumpMaster.set(0);
             airEqualizerOpen();
         }
-
+        Robot.ShuffleBoard.vacuumPumpsOutput.setValue(vacuumPumpMaster.get());
     }
 
     public void airEqualizerOpen() {
@@ -51,6 +52,7 @@ public class VacuumPumpSubsystem extends Subsystem {
   
     public void Equalizer(boolean state) {
         vacuumSolenoid.set(state);
+        Robot.ShuffleBoard.solenoidVacuumEqualizer.setValue(state);
     }
 
     public void stop() {
